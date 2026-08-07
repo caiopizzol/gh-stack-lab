@@ -10,5 +10,5 @@ export function buildExponentialRetrySchedule(
   }
 
   const delay = parseRetryDelay(delayValue);
-  return Array.from({ length: attempts }, (_, index) => delay * (index + 1));
+  return Array.from({ length: attempts }, (_, index) => delay * 2 ** index);
 }

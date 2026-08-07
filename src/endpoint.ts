@@ -1,8 +1,13 @@
 import { parsePort } from "./parse-port";
 
 export function buildEndpoint(host: string, portValue: string): URL {
-  const endpoint = new URL("https://localhost");
-  endpoint.hostname = host;
-  endpoint.port = String(parsePort(portValue));
-  return endpoint;
+  const port = parsePort(portValue);
+
+  try {
+    const endpoint = new URL(`https://${host}:${port}`);
+    if (endpoint.hostname !== host.toLowerCase()) throw new TypeError();
+    return endpoint;
+  } catch {
+    throw new RangeError(`Invalid endpoint host: ${host}`);
+  }
 }

@@ -8,7 +8,7 @@ export function parseRetryBudget(value: string): number {
 
   const budget = Number(normalized);
 
-  if (!/^\d+$/.test(value) || !Number.isInteger(budget) || budget < 1 || budget > 100) {
+  if (!Number.isInteger(budget) || budget < 1 || budget > 100) {
     throw new RangeError("retry budget must be a whole number from 1 through 100");
   }
 

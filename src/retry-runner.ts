@@ -4,7 +4,8 @@ export type RetryWait = (delayMs: number) => Promise<void>;
 export async function runWithRetries<T>(
   operation: () => Promise<T>,
   delays: readonly number[],
-  wait: RetryWait = async () => {},
+  wait: RetryWait = (delayMs) =>
+    new Promise((resolve) => setTimeout(resolve, delayMs)),
 ): Promise<T> {
   for (let attemptIndex = 0; ; attemptIndex += 1) {
     try {

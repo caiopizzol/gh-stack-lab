@@ -9,4 +9,5 @@ test("classifies transient HTTP responses", () => {
   expect(shouldRetryStatus(429)).toBe(true);
   expect(shouldRetryStatus(500)).toBe(true);
   expect(shouldRetryStatus(599)).toBe(true);
+  expect(shouldRetryStatus(600)).toBe(false);
 });

@@ -6,6 +6,6 @@ test("uses exponential growth by default", () => {
   expect(DEFAULT_RETRY_POLICY).toEqual({
     baseDelayMs: 100,
     maxDelayMs: 5_000,
-    multiplier: 2,
+    multiplier: 3,
   });
 });

@@ -12,3 +12,7 @@ test("computes capped retry delays", () => {
 test("rejects fractional attempt indexes", () => {
   expect(() => computeRetryDelay(DEFAULT_RETRY_POLICY, 1.5)).toThrow(RangeError);
 });
+
+test("rejects negative attempt indexes", () => {
+  expect(() => computeRetryDelay(DEFAULT_RETRY_POLICY, -1)).toThrow(RangeError);
+});

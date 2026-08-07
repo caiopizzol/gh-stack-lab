@@ -47,4 +47,14 @@ describe("IdempotencyStore", () => {
       deleteSpy.mockRestore();
     }
   });
+
+  test("has treats the exact expiry boundary as expired", () => {
+    let now = 100;
+    const store = new IdempotencyStore<void>(10, () => now);
+
+    store.remember("request-1", undefined);
+    now = 110;
+
+    expect(store.has("request-1")).toBeFalse();
+  });
 });

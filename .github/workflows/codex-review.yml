@@ -1,0 +1,61 @@
+# Copy this into a repository as .github/workflows/codex-review.yml.
+#
+# The job itself is the check. GitHub already reports queued, in progress,
+# cancelled, success, and failure, so there is no need for the Checks API, a
+# GitHub App, or a webhook service to make this a merge gate.
+name: Codex review
+
+on:
+  # pull_request_target loads this workflow from the protected base branch. A PR
+  # therefore cannot replace this job's commands.
+  # This is safe only because the job never checks out or executes PR code. The
+  # action fetches the PR into its own read-only review worktree.
+  pull_request_target:
+    # `ready_for_review` belongs here only alongside a draft condition on the job.
+    # Marking a draft ready leaves the head SHA unchanged, so adding the event
+    # without the condition would review the revision that was just reviewed.
+    types: [opened, synchronize, reopened]
+
+# A newer commit makes an in-flight review obsolete, so cancel it rather than
+# spending a subscription call reviewing a revision nobody will merge.
+concurrency:
+  group: codex-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# The action reads repository contents and publishes resolvable review threads.
+# Codex itself is given no token at all.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: Codex review
+    # A persistent runner, because the Codex sign-in has to survive between jobs.
+    # An ephemeral GitHub-hosted runner would need the credential injected as a
+    # secret on every run.
+    runs-on: [self-hosted, codex-reviewer]
+    timeout-minutes: 15
+    # Fork PRs are not reviewed. The runner is a real machine and a review reads the
+    # PR's code, so opening that to arbitrary contributors should be deliberate.
+    #
+    # Note this is fail-OPEN as a review policy: a job skipped by a job-level `if`
+    # is reported as successful, not failed, so if this check were required, any
+    # pull request this condition skips could satisfy it without being reviewed.
+    # Read a green tick here as "not blocked", never as "this was reviewed".
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - uses: caiopizzol/codex-reviewer@v0
+        with:
+          github-token: ${{ github.token }}
+
+# Making this a merge gate:
+#
+# 1. Let it run once on a real pull request.
+# 2. Require the observed "Codex review" check and conversation resolution in
+#    branch protection.
+#
+# Do not type the context name in before that first run: the name has to match
+# what Actions actually reported, and guessing it produces a required check that
+# never arrives and blocks every merge.

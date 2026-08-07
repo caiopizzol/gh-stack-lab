@@ -8,6 +8,6 @@ export function buildRetryPlan(policy: RetryPolicy, maxAttempts: number): number
   }
 
   return Array.from({ length: maxAttempts - 1 }, (_, index) =>
-    computeRetryDelay(policy, index + 1),
+    computeRetryDelay(policy, index),
   );
 }

@@ -1,9 +1,14 @@
 /** Parse a whole-number retry budget from 1 through 100. */
 export function parseRetryBudget(value: string): number {
-  const budget = Number(value);
+  const normalized = value.trim();
+
+  if (!/^\d+$/.test(normalized)) {
+    throw new RangeError("retry budget must be a whole number from 1 through 100");
+  }
+
+  const budget = Number(normalized);
 
   if (
-    !/^\d+$/.test(value) ||
     !Number.isInteger(budget) ||
     budget < 1 ||
     budget > 100

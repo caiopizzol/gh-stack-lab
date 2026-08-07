@@ -15,3 +15,9 @@ test("rejects invalid endpoint hosts", () => {
   expect(() => buildEndpoint("", "8443")).toThrow(RangeError);
   expect(() => buildEndpoint("api.example.com:9000", "8443")).toThrow(RangeError);
 });
+
+test("canonicalizes internationalized endpoint hosts", () => {
+  expect(buildEndpoint("bücher.de", "8443").toString()).toBe(
+    "https://xn--bcher-kva.de:8443/",
+  );
+});

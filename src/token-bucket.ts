@@ -17,5 +17,8 @@ export function createBucket(
 
 /** Refill a bucket by the elapsed fraction of its window. */
 export function refill(state: BucketState, ratio: number): BucketState {
-  return { ...state, tokens: state.tokens + state.capacity * ratio };
+  return {
+    ...state,
+    tokens: Math.max(0, state.tokens + state.capacity * ratio),
+  };
 }

@@ -1,2 +1,2 @@
 /** Number of attempts used by the default retry policy. */
-export const DEFAULT_RETRY_ATTEMPTS = 4;
+export const DEFAULT_RETRY_ATTEMPTS = 5;

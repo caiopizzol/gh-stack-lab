@@ -18,6 +18,6 @@ export function summarizeExecutions(events: readonly ExecutionEvent[]): Executio
     total: events.length,
     operations,
     cacheHits,
-    cacheHitRate: cacheHits / events.length,
+    cacheHitRate: events.length === 0 ? 0 : cacheHits / events.length,
   };
 }

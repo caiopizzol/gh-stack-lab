@@ -2,6 +2,15 @@ import { describe, expect, test } from "bun:test";
 import { summarizeExecutions } from "./execution-report";
 
 describe("summarizeExecutions", () => {
+  test("returns a defined cache hit rate when there are no executions", () => {
+    expect(summarizeExecutions([])).toEqual({
+      total: 0,
+      operations: 0,
+      cacheHits: 0,
+      cacheHitRate: 0,
+    });
+  });
+
   test("reports operation and cache totals", () => {
     expect(
       summarizeExecutions([

@@ -33,8 +33,8 @@ export class IdempotencyStore<T> {
     const record = this.#records.get(normalizedKey);
 
     if (!record) return undefined;
-    if (record.expiresAt < this.now()) {
-      this.#records.delete(key);
+    if (record.expiresAt <= this.now()) {
+      this.#records.delete(normalizedKey);
       return undefined;
     }
 

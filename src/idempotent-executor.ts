@@ -8,7 +8,7 @@ export class IdempotentExecutor<T> {
 
   async execute(key: string, operation: () => Promise<T>): Promise<T> {
     const cached = this.store.get(key);
-    if (cached !== undefined) return cached;
+    if (cached !== undefined || this.store.has(key)) return cached as T;
 
     const normalizedKey = normalizeIdempotencyKey(key);
     const running = this.#inFlight.get(normalizedKey);
@@ -17,8 +17,10 @@ export class IdempotentExecutor<T> {
     const pending = operation().then((value) => this.store.remember(key, value));
     this.#inFlight.set(normalizedKey, pending);
 
-    const result = await pending;
-    this.#inFlight.delete(normalizedKey);
-    return result;
+    try {
+      return await pending;
+    } finally {
+      this.#inFlight.delete(normalizedKey);
+    }
   }
 }

@@ -40,4 +40,17 @@ export class IdempotencyStore<T> {
 
     return record.value;
   }
+
+  has(key: string): boolean {
+    const normalizedKey = normalizeIdempotencyKey(key);
+    const record = this.#records.get(normalizedKey);
+
+    if (!record) return false;
+    if (record.expiresAt < this.now()) {
+      this.#records.delete(normalizedKey);
+      return false;
+    }
+
+    return true;
+  }
 }

@@ -21,3 +21,8 @@ test("canonicalizes internationalized endpoint hosts", () => {
     "https://xn--bcher-kva.de:8443/",
   );
 });
+
+test("rejects host controls that URL parsing would discard", () => {
+  expect(() => buildEndpoint("api.exa\tmple.com", "8443")).toThrow(RangeError);
+  expect(() => buildEndpoint("api.example.com\n", "8443")).toThrow(RangeError);
+});

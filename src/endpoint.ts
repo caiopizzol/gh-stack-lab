@@ -2,6 +2,10 @@ import { parsePort } from "./parse-port";
 
 export function buildEndpoint(host: string, portValue: string): URL {
   const port = parsePort(portValue);
+  if (/[\u0000-\u0020\u007f]/.test(host)) {
+    throw new RangeError(`Invalid endpoint host: ${host}`);
+  }
+
   let hostUrl: URL;
 
   try {

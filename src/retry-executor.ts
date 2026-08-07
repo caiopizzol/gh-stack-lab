@@ -6,21 +6,12 @@ export async function executeWithRetries<T>(
   delays: readonly number[],
   wait: RetryWait = async () => {},
 ): Promise<T> {
-  let result: T | undefined;
-  let hasResult = false;
-  let lastError: unknown;
-
-  for (let attemptIndex = 0; attemptIndex <= delays.length; attemptIndex += 1) {
+  for (let attemptIndex = 0; ; attemptIndex += 1) {
     try {
-      result = await operation();
-      hasResult = true;
+      return await operation();
     } catch (error) {
-      lastError = error;
       if (attemptIndex === delays.length) throw error;
       await wait(delays[attemptIndex]!);
     }
   }
-
-  if (!hasResult) throw lastError;
-  return result as T;
 }

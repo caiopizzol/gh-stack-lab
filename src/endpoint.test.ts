@@ -26,3 +26,12 @@ test("rejects host controls that URL parsing would discard", () => {
   expect(() => buildEndpoint("api.exa\tmple.com", "8443")).toThrow(RangeError);
   expect(() => buildEndpoint("api.example.com\n", "8443")).toThrow(RangeError);
 });
+
+test("rejects explicit ports in the host input", () => {
+  expect(() => buildEndpoint("api.example.com:443", "8443")).toThrow(RangeError);
+  expect(() => buildEndpoint("api.example.com:0443", "8443")).toThrow(RangeError);
+});
+
+test("accepts a bracketed IPv6 host", () => {
+  expect(buildEndpoint("[::1]", "8443").toString()).toBe("https://[::1]:8443/");
+});

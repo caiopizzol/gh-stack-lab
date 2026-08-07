@@ -6,6 +6,11 @@ export function buildEndpoint(host: string, portValue: string): URL {
     throw new RangeError(`Invalid endpoint host: ${host}`);
   }
 
+  const bracketedIpv6 = host.startsWith("[") && host.endsWith("]");
+  if (host.includes(":") && !bracketedIpv6) {
+    throw new RangeError(`Invalid endpoint host: ${host}`);
+  }
+
   let hostUrl: URL;
 
   try {

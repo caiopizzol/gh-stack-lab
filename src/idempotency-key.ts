@@ -1,5 +1,5 @@
 export function normalizeIdempotencyKey(value: string): string {
-  const normalized = value.trim();
+  const normalized = value.trim().normalize("NFC");
 
   if (normalized.length === 0) {
     throw new TypeError("An idempotency key cannot be empty");

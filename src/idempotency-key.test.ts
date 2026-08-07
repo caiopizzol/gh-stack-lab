@@ -9,4 +9,8 @@ describe("normalizeIdempotencyKey", () => {
   test("rejects an empty key", () => {
     expect(() => normalizeIdempotencyKey("   ")).toThrow("cannot be empty");
   });
+
+  test("uses one canonical Unicode representation", () => {
+    expect(normalizeIdempotencyKey("cafe\u0301")).toBe("café");
+  });
 });

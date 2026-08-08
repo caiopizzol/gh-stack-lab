@@ -9,3 +9,7 @@ test("accepts positive windows", () => {
 test("rejects zero windows", () => {
   expect(() => parseWindow("0")).toThrow("window must be positive");
 });
+
+test("rejects negative windows", () => {
+  expect(() => parseWindow("-1")).toThrow("window must be positive");
+});

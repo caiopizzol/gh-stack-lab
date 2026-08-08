@@ -10,5 +10,5 @@ export function calculateRetryBackoff(
   }
 
   const delay = parseRetryDelay(delayValue);
-  return delay * (attemptIndex + 1);
+  return delay * 2 ** attemptIndex;
 }

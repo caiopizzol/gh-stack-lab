@@ -13,7 +13,7 @@ export function buildRetryPlan(
 ): RetryPlanItem[] {
   const retryLimit = parseRetryLimit(headers);
 
-  return Array.from({ length: retryLimit + 1 }, (_, attemptIndex) => ({
+  return Array.from({ length: retryLimit }, (_, attemptIndex) => ({
     attempt: attemptIndex + 1,
     delaySeconds: calculateRetryBackoff(delayValue, attemptIndex),
   }));

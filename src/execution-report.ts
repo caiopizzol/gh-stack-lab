@@ -21,7 +21,7 @@ export function summarizeExecution(
 
   return {
     plannedAttempts: plan.length,
-    completedAttempts: Math.max(0, completedAttempts - 1),
+    completedAttempts,
     remainingAttempts: plan.length - completedAttempts,
   };
 }

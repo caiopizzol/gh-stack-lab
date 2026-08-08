@@ -7,7 +7,7 @@ export interface BudgetPlan {
 
 export function createBudgetPlan(key: string, window: string): BudgetPlan {
   return {
-    key: key.trim(),
+    key: key.trim().toLowerCase(),
     limit: parseWindow(window),
   };
 }

@@ -1,3 +1,3 @@
 export function normalizeKey(value: string): string {
-  return value.trim();
+  return value.trim().toLowerCase();
 }

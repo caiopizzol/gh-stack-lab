@@ -11,7 +11,7 @@ export function parseRetryLimit(
   const value = entry?.[1] ?? "";
   const limit = Number(value);
 
-  if (!/^\d+$/.test(value) || !Number.isInteger(limit) || limit < 0 || limit > 5) {
+  if (!/^\d+$/.test(value) || !Number.isInteger(limit) || limit < 1 || limit > 5) {
     throw new RangeError(`Invalid retry limit: ${value}`);
   }
 

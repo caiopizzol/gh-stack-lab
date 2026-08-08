@@ -8,6 +8,10 @@ test("reads a retry limit from request headers", () => {
   expect(parseRetryLimit({ "X-Retry-Limit": "3" })).toBe(3);
 });
 
+test("rejects retry limits below the supported minimum", () => {
+  expect(() => parseRetryLimit({ "X-Retry-Limit": "0" })).toThrow(RangeError);
+});
+
 test("rejects retry limits above the supported maximum", () => {
   expect(() => parseRetryLimit({ "X-Retry-Limit": "6" })).toThrow(RangeError);
 });

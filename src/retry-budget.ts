@@ -1,4 +1,4 @@
-export const MAX_RETRY_ATTEMPTS = 5;
+export const MAX_RETRY_ATTEMPTS = 4;
 
 /** Parse the maximum number of attempts allowed by a retry budget. */
 export function parseRetryBudget(value: string): number {

@@ -11,6 +11,10 @@ test("parses a retry budget", () => {
   );
 });
 
+test("accepts a burst retry budget", () => {
+  expect(parseRetryBudget("8")).toBe(8);
+});
+
 test("rejects retry budgets outside the supported range", () => {
   expect(() => parseRetryBudget("0")).toThrow(RangeError);
   expect(() => parseRetryBudget(String(MAX_RETRY_ATTEMPTS + 1))).toThrow(
